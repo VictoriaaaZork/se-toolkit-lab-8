@@ -4,11 +4,28 @@ Use observability MCP tools when the user asks about failures, outages, latency,
 
 ## Tool usage strategy
 
-1. Start with `logs_error_count` for "any errors" and incident-overview questions.
-2. Use `logs_search` to collect concrete error events (service, message, trace IDs, timestamps).
-3. If logs include a trace ID, call `traces_get` to inspect the complete trace.
-4. If no trace ID is present, call `traces_list` for the affected service and fetch the most relevant trace.
-5. Summarize findings with key evidence and next action; avoid raw JSON dumps.
+### Investigation flow for "What went wrong?" / "Check system health"
+
+1. Start with `logs_search` for the recent incident window (default last 15 minutes, or user-provided range) and filter to error-level backend logs first.
+2. Extract concrete evidence: timestamp, service, error message, and trace ID (if present).
+3. If at least one trace ID is present, call `traces_get` for the most relevant/fresh trace to confirm causal chain and failing span.
+4. If no trace ID is present, call `traces_list` for the impacted service and inspect the closest trace with `traces_get`.
+5. Provide one concise narrative that combines log + trace evidence:
+   - symptom
+   - impact scope
+   - probable root cause
+   - immediate next action
+6. Never dump raw JSON unless user explicitly asks for it.
+
+### Proactive health checks (cron)
+
+When asked to create a recurring health check:
+
+1. Use the cron tool to schedule the requested interval.
+2. For each run, inspect errors in the recent lookback window with `logs_search`.
+3. If errors exist, inspect one representative trace (`traces_get`) and post a short health summary to chat.
+4. If no errors exist, post "System looks healthy" with the checked window.
+5. Support follow-up lifecycle commands: list jobs, update interval, remove test job.
 
 ## Response style
 
