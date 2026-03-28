@@ -157,6 +157,12 @@
       "bridgeToken": "",
       "allowFrom": [],
       "groupPolicy": "open"
+    },
+    "webchat": {
+      "enabled": true,
+      "allow_from": [
+        "*"
+      ]
     }
   },
   "providers": {
