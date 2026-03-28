@@ -1,0 +1,1 @@
+_stream:{service="backend"} AND level:error
