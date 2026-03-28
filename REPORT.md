@@ -63,3 +63,12 @@ A: The agent described a layered architecture with clients (React/Flutter/Telegr
 ### Q: Show me the scores
 A: The agent first requested missing lab context, then provided structured score data for Lab 04 (completion rate, task averages, attempts, top learners), and noted Lab 08 had no submissions.
 
+
+## Task 2A  Deployed agent
+
+Startup excerpt (nanobot in Docker):
+- `Starting nanobot gateway version 0.1.4.post6`
+- `MCP server 'lms': connected, 9 tools registered`
+- `Agent loop started`
+- `No channels enabled` (expected before webchat channel setup in Task 2B)
+
